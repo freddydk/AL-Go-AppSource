@@ -134,7 +134,7 @@ jobs:
 
       - name: Publish artifacts - apps
         uses: actions/upload-artifact@v2
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref_name == 'main'
         with:
           name: ${{ env.appsArtifactsName }}
           path: '${{ matrix.project }}/output/Apps/'
@@ -142,7 +142,7 @@ jobs:
 
       - name: Publish artifacts - dependencies
         uses: actions/upload-artifact@v2
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref_name == 'main'
         with:
           name: ${{ env.dependenciesArtifactsName }}
           path: '${{ matrix.project }}/output/Dependencies/'
@@ -150,7 +150,7 @@ jobs:
 
       - name: Publish artifacts - test apps
         uses: actions/upload-artifact@v2
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref_name == 'main'
         with:
           name: ${{ env.testAppsArtifactsName }}
           path: '${{ matrix.project }}/output/TestApps/'
@@ -182,7 +182,7 @@ jobs:
   Deploy:
     runs-on: [ windows-latest ] 
     needs: [ Initialization, Build ]
-    if: ${{ github.event_name != 'pull request' && needs.Initialization.outputs.environmentCount > 0 }}
+    if: ${{ github.event_name != 'pull_request' && github.ref_name == 'main' && needs.Initialization.outputs.environmentCount > 0 }}
     strategy:
       matrix:
         environment: ${{ fromJson(needs.Initialization.outputs.environments) }}
