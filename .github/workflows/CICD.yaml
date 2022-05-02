@@ -127,7 +127,7 @@ jobs:
           if ($project -eq ".") { $project = $settings.RepoName }
           'Apps','Dependencies','TestApps','TestResults','BuildOutput' | ForEach-Object {
             $name = "$($_)ArtifactsName"
-            $value = "$project-$_-$($settings.repoVersion).$($settings.appBuild).$($settings.appRevision)"
+            $value = "$project-$("$ENV:GITHUB_REF_NAME".Replace('/','_'))-$_-$($settings.repoVersion).$($settings.appBuild).$($settings.appRevision)"
             Write-Host "::set-output name=$name::$value"
             Add-Content -Path $env:GITHUB_ENV -Value "$name=$value"
           }
@@ -142,7 +142,7 @@ jobs:
 
       - name: Publish artifacts - dependencies
         uses: actions/upload-artifact@v2
-        if: github.event_name != 'pull_request' && (github.ref_name == 'main' || startswith(github.ref_name, 'release/')
+        if: github.event_name != 'pull_request' && (github.ref_name == 'main' || startswith(github.ref_name, 'release/'))
         with:
           name: ${{ env.dependenciesArtifactsName }}
           path: '${{ matrix.project }}/output/Dependencies/'
@@ -150,7 +150,7 @@ jobs:
 
       - name: Publish artifacts - test apps
         uses: actions/upload-artifact@v2
-        if: github.event_name != 'pull_request' && (github.ref_name == 'main' || startswith(github.ref_name, 'release/')
+        if: github.event_name != 'pull_request' && (github.ref_name == 'main' || startswith(github.ref_name, 'release/'))
         with:
           name: ${{ env.testAppsArtifactsName }}
           path: '${{ matrix.project }}/output/TestApps/'
