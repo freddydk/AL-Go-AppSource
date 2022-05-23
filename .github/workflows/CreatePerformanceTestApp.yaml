@@ -1,4 +1,4 @@
-name: Create a new test app
+name: Create a new performance test app
 
 on:
   workflow_dispatch:
@@ -48,7 +48,7 @@ jobs:
         id: init
         uses: freddydk/AL-Go-Actions/WorkflowInitialize@main
         with:
-          eventId: "DO0095"
+          eventId: "DO0102"
 
   Update:
     runs-on: [ windows-latest ]
@@ -60,7 +60,7 @@ jobs:
         with:
           parentTelemetryScopeJson: ${{ needs.Initialization.outputs.telemetryScopeJson }}
           project: ${{ github.event.inputs.project }}
-          type: 'Test App'
+          type: 'Performance Test App'
           publisher: ${{ github.event.inputs.publisher }}
           name: ${{ github.event.inputs.name }}
           idrange: ${{ github.event.inputs.idrange }}
@@ -79,5 +79,5 @@ jobs:
         id: PostProcess
         uses: freddydk/AL-Go-Actions/WorkflowPostProcess@main
         with:
-          eventId: "DO0095"
+          eventId: "DO0102"
           telemetryScopeJson: ${{ needs.Initialization.outputs.telemetryScopeJson }}
