@@ -10,7 +10,7 @@ on:
       name:
         description: Name
         required: true
-        default: '<YourAppName>.Test'         
+        default: '<YourAppName>.PerformanceTest'         
       publisher:
         description: Publisher
         required: true
